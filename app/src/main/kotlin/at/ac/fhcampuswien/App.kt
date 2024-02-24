@@ -3,10 +3,38 @@
  */
 package at.ac.fhcampuswien
 
+import kotlin.random.Random
+
 class App {
+
     // Game logic for a number guessing game
     fun playNumberGame(digitsToGuess: Int = 4) {
         //TODO: build a menu which calls the functions and works with the return values
+        val generatedNumber = generateRandomNonRepeatingNumber(digitsToGuess)
+        println("A random $digitsToGuess-digit number has been generated. Start guessing!")
+
+        for (attempt in 1..6) { // Allow up to 6 attempts for simplicity
+            println("\nAttempt $attempt of 6. Enter your guess:")
+            val userGuess = readLine()?.toIntOrNull()
+
+            if (userGuess == null || userGuess.toString().length != digitsToGuess) {
+                println("Invalid input. Please enter a $digitsToGuess-digit number with unique digits.")
+                continue
+            }
+
+            val compareResult = checkUserInputAgainstGeneratedNumber(userGuess, generatedNumber)
+            if (compareResult.m == digitsToGuess) {
+                println("Congratulations! You've guessed the number correctly: $generatedNumber")
+                return
+            } else {
+                println("Correct Positions (m): ${compareResult.m}")
+                println("Correct Digits Regardless of Position (n): ${compareResult.n}")
+            }
+        }
+
+        println("Sorry, you've run out of attempts. The correct number was: $generatedNumber")
+
+
     }
 
     /**
@@ -24,8 +52,21 @@ class App {
      * @throws IllegalArgumentException if the length is more than 9 or less than 1.
      */
     val generateRandomNonRepeatingNumber: (Int) -> Int = { length ->
-        //TODO implement the function
-        0   // return value is a placeholder
+        if (length < 1 || length > 9) {
+            throw IllegalArgumentException("Length must be between 1 and 9.")
+        }
+
+        val digits = mutableListOf<Int>()
+        while (digits.size < length) {
+            val randomNumber = Random.nextInt(1, 10)
+            if (randomNumber !in digits) {
+                digits.add(randomNumber)
+            }
+        }
+
+        digits.joinToString("").toInt()
+
+
     }
 
     /**
@@ -45,12 +86,72 @@ class App {
      * @throws IllegalArgumentException if the inputs do not have the same number of digits.
      */
     val checkUserInputAgainstGeneratedNumber: (Int, Int) -> CompareResult = { input, generatedNumber ->
-        //TODO implement the function
-        CompareResult(0, 0)   // return value is a placeholder
+        if (input.toString().length != generatedNumber.toString().length) {
+            throw IllegalArgumentException("The input and the generated number must have the same number of digits.")
+        }
+
+        val m = countCorrectPositions(input, generatedNumber)
+        val n = countDigitOccurrences(input, generatedNumber)
+
+        CompareResult(n, m)  // return value is a placeholder
     }
+}
+fun countCorrectPositions(input: Int, generatedNumber: Int): Int {
+    val inputString = input.toString()
+    val generatedString = generatedNumber.toString()
+
+    if (inputString.length != generatedString.length) {
+        throw IllegalArgumentException("Both numbers must have the same number of digits.")
+    }
+
+    var correctPositions = 0
+    for (i in inputString.indices) {
+        if (inputString[i] == generatedString[i]) {
+            correctPositions++
+        }
+    }
+
+    return correctPositions
+}
+
+fun countDigitOccurrences(input: Int, generatedNumber: Int): Int {
+    val inputString = input.toString()
+    val generatedString = generatedNumber.toString()
+
+    val generatedDigits = generatedString.toMutableList()
+    var occurrences = 0
+
+    for (charInInput in inputString) {
+        if (charInInput in generatedDigits) {
+            occurrences++
+            generatedDigits.remove(charInInput)
+        }
+    }
+
+    return occurrences
 }
 
 fun main() {
-    println("Hello World!")
-    // TODO: call the App.playNumberGame function with and without default arguments
+    val app = App()
+    val input = 5555
+    val generatedNumber = 8567
+
+    println("Input Number: $input")
+
+    println("generated Number: $generatedNumber")
+
+    val cp = countCorrectPositions(input,generatedNumber)
+
+    println("Correct Position: $cp")
+
+    val co = countDigitOccurrences(input,generatedNumber)
+
+    println("Correct Digits Regardless of Position: $co")
+
+    val compareResult = app.checkUserInputAgainstGeneratedNumber(input, generatedNumber)
+    println("IN:Correct Positions (m): ${compareResult.m}")
+    println("IN:Correct Digits Regardless of Position (n): ${compareResult.n}")
+
+    app.playNumberGame()
+
 }

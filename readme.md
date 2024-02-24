@@ -1,4 +1,4 @@
-# MAD - Exercise 01
+***# MAD - Exercise 01
 ## Tasks
 * Watch the Kotlin Crashcourse Video in Moodle or complete the tutorials **[Introduction to programming in Kotlin](https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-1)** and **[Kotlin fundamentals](https://developer.android.com/courses/pathways/android-basics-compose-unit-2-pathway-1
 )**.
