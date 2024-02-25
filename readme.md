@@ -8,19 +8,28 @@
 
 ## Questions
 ### Describe how Kotlin handles null safety. What are nullable types and non-null types in Kotlin? (0,5 points)
-
-<span style="color:blue">Provide your answer here! </span>
-> Note: you can also use code snippets to illustrate your answer. 
+Antwort:
+  Kotlin hat eine Art und Weise kreiert wie es mit NullPointerException umgeht, indem es Datentypen hat, welche schon mit der NullSaefty aufgebaut sind. 
+  Bestimmte Datentypen kann man also keine null zuweisung machen, sonst gibt der Compiler ein Error. Alle Datentypen sind von Default aus, non-nullable. 
+  Man kann aber Datentypen Nullable machen indem man ein ? nach dem Datentypen setzt:
 
 ```kotlin 
-// example code snippet
-val a: String = "value" // non-null type
+var nullableString: String? = "Hello, World"
+nullableString = null 
 ```
 
 ### What are lambda expressions and higher order functions in Kotlin? Why would you store a function inside a variable? (0,5 points)
+Antwort:
+  Eine Lambda Expression ist eine anonyme funktion, Es hat keinen Namen und es wird nicht wie konventionelle Funktionen deklariert. 
+  ```kotlin 
+val sum: (Int, Int) -> Int = { a, b -> a + b }
+```
 
-<span style="color:blue">Provide your answer here!</span>
+  Eine higher order function ist eine Funktion welche andere functions als Parameter aufnimmt und oder eine function als return wert geben kann. 
+  Beispielweise ist die .map function welche an Arrays durchgeführt werdern kann solch eine Funktion.
 
+  Storing a function inside a variable: Gut damit man Clean Code hat, damit kann man das DRY verfahren implementieren, Funktionen die in Variablen 
+  gespeichert sind können als Parameter in high order functions weitergegeben werden
 ### Provide a solution for the following number guessing game inside `App.kt`. (3 points)
 
 ## Number Guessing Game in Kotlin
